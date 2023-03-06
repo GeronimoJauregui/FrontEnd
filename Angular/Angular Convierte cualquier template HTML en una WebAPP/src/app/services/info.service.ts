@@ -18,14 +18,12 @@ export class InfoService {
     this.http.get('assets/data/data.json').subscribe( (resp: InfoPagina) => {
       this.data_info = resp;
       this.data_cargada = true;
-      console.log(this.data_info);
     });
   }
 
   private obtenerEquipo (){
     this.http.get('https://angular-webapp-15962-default-rtdb.firebaseio.com/equipo.json').subscribe( (resp: any) => {
       this.data_equipo = resp;
-      console.log(this.data_equipo);
     });
   }
 }
