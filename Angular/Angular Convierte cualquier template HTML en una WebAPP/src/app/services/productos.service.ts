@@ -16,7 +16,6 @@ export class ProductosService {
     this.http.get('https://angular-webapp-15962-default-rtdb.firebaseio.com/productos_idx.json').subscribe( (resp: any) => {
       this.data_productosIdx = resp;
       this.productosCargados = true;
-      console.log(this.data_productosIdx);
     });
   }
 }
