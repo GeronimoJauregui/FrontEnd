@@ -1,0 +1,11 @@
+<section>
+  <div class="ae-masonry ae-masonry-md-2 ae-masonry-xl-4"  *ngIf="productosService.productosCargados">
+    <a *ngFor = "let productoIdx of productosService.productosFiltrado" routerLink="/item/{{ productoIdx.cod }}"  class="rk-item ae-masonry__item">
+      <img src="assets/productos/{{ productoIdx.url }}.jpg" alt="">
+      <div class="item-meta">
+        <h2>{{ productoIdx.titulo }}</h2>
+        <p>{{ productoIdx.categoria}}</p>
+      </div>
+    </a>
+  </div>
+</section>
