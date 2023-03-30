@@ -1,1 +1,25 @@
-<p>grafica1 works!</p>
+<div class="row">
+    <div class="col-6">
+        <app-doughnut 
+                    [title]="titleSales"
+                    [labels]="arrayLabelsSales"
+                    [dataGraf]="dataSales"
+                    [colors]="colorsSales">
+        </app-doughnut>
+    </div>
+    <div class="col-6">
+        <app-doughnut [title]="titlePedidos"
+        [labels]="arrayLabelsPedidos"
+        [dataGraf]="dataPedidos"
+        [colors]="colorsPedidos"></app-doughnut>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <app-doughnut></app-doughnut>
+    </div>
+    <div class="col-6">
+        <app-doughnut></app-doughnut>
+    </div>
+</div>
