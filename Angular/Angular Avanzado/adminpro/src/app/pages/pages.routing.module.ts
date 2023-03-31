@@ -13,9 +13,9 @@ const routes: Routes = [
         path: 'dashboard', 
         component: PagesComponent,
         children: [
-          { path: '', component: DashboardComponent},
-          { path: 'progress', component: ProgressComponent},
-          { path: 'grafica1', component: Grafica1Component},
+          { path: '', component: DashboardComponent, data: { titulo: 'Dashborad'} },
+          { path: 'progress', component: ProgressComponent, data: { titulo: 'Progress Bar'} },
+          { path: 'grafica1', component: Grafica1Component, data: { titulo: 'Graficas'} },
           { path: 'account-settings', component: AccountSettingComponent},
           { path: 'promesas', component: PromesasComponent},
           { path: 'rxjs', component: RxjsComponent},
