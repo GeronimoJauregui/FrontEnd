@@ -1,15 +1,65 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
 
-  constructor() { }
+  public formSubmitted = false;
 
-  ngOnInit(): void {
+  public registerForm = this.fb.group({
+    nombre: ['', [ Validators.required, Validators.minLength(3)]],
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+    confirmPassword: ['', [Validators.required]],
+    terminos: [false, [Validators.requiredTrue]],
+  }, {
+    validators: this.passwordsIguales('password', 'confirmPassword')
+  });
+
+  constructor( private fb: FormBuilder) { }
+
+  crearUsuario() {
+    this.formSubmitted = true;
+
+    if (this.registerForm.valid){
+      console.log('Form correcto');
+    } else {
+      console.log('Incorrecto');
+    }
   }
 
+  campoNoValido( campo: string): boolean {
+    if(this.registerForm.get(campo).invalid && this.formSubmitted) {
+      return true
+    }
+    return false;
+  }
+
+  passwordDiferentes(): boolean {
+    const passw1 = this.registerForm.get('password').value;
+    const passw2 = this.registerForm.get('confirmPassword').value;
+    if (((passw1 !== passw2) || this.registerForm.get('password').invalid || this.registerForm.get('confirmPassword').invalid)
+    && this.formSubmitted) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  passwordsIguales( pass1: string, pass2: string ) {
+    return ( formGroup: FormGroup ) => {
+      const pass1Control = formGroup.get(pass1);
+      const pass2Control = formGroup.get(pass2);
+
+      if( pass1Control.value === pass2Control.value ){
+        pass2Control.setErrors(null);
+      } else {
+        pass2Control.setErrors({noEsIgual: true});
+      }
+    }
+  }
 }
