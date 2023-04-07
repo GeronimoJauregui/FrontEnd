@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
+import { UsuarioService } from 'src/app/services/usuario.service';
+
+declare const google: any;
 
 @Component({
   selector: 'app-header',
@@ -6,11 +10,19 @@ import { Component, OnInit } from '@angular/core';
   styles: [
   ]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
 
-  constructor() { }
+  constructor(private usuarioService: UsuarioService,
+              private router: Router,
+              private ngZone: NgZone) { }
 
-  ngOnInit(): void {
+  logout() {
+    this.usuarioService.logout();
+
+    google.accounts.id.revoke( 'geronimo.jauregui@isita.com.mx', () => {
+      this.ngZone.run(() => {
+        this.router.navigateByUrl('/login');
+      })
+    })
   }
-
 }

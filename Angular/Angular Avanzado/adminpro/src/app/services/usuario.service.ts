@@ -5,13 +5,19 @@ import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+
 const base_url = environment.base_url;
+
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
 
   constructor( private http: HttpClient) { }
+
+  logout() {
+    localStorage.removeItem('token');
+  }
 
   validarToken(): Observable<boolean> {
     const token = localStorage.getItem('token') || '';
@@ -51,8 +57,6 @@ export class UsuarioService {
   }
 
   loginGoogle( token: string) {
-    console.log('x',token);
-    console.log('y',{token});
     return this.http.post(`${base_url}/login/google`, { token })
           .pipe(
             tap( (resp: any ) => {
