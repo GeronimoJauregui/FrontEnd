@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register',
@@ -11,22 +13,31 @@ export class RegisterComponent {
   public formSubmitted = false;
 
   public registerForm = this.fb.group({
-    nombre: ['', [ Validators.required, Validators.minLength(3)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-    confirmPassword: ['', [Validators.required]],
-    terminos: [false, [Validators.requiredTrue]],
+    nombre: ['Geronimo', [ Validators.required, Validators.minLength(3)]],
+    email: ['prueba1@gmail.com', [Validators.required, Validators.email]],
+    password: ['admin', [Validators.required]],
+    confirmPassword: ['admin', [Validators.required]],
+    terminos: [true, [Validators.requiredTrue]],
   }, {
     validators: this.passwordsIguales('password', 'confirmPassword')
   });
 
-  constructor( private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,
+              private usuarioService: UsuarioService) 
+  { }
 
   crearUsuario() {
     this.formSubmitted = true;
-
     if (this.registerForm.valid){
-      console.log('Form correcto');
+      this.usuarioService.crearUsuario(this.registerForm.value).subscribe( (resp: any) => {console.log(resp);
+        if(resp.ok){
+          console.log(resp);
+        } else {
+          Swal.fire('Error', resp.msg, 'error');
+        }
+      }, (err) => {
+        Swal.fire('Error', err.error.msg, 'error');
+      });
     } else {
       console.log('Incorrecto');
     }
