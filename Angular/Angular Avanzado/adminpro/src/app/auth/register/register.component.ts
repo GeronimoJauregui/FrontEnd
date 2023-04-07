@@ -29,11 +29,11 @@ export class RegisterComponent {
   crearUsuario() {
     this.formSubmitted = true;
     if (this.registerForm.valid){
-      this.usuarioService.crearUsuario(this.registerForm.value).subscribe( (resp: any) => {console.log(resp);
+      this.usuarioService.crearUsuario(this.registerForm.value).subscribe( (resp: any) => {
         if(resp.ok){
           console.log(resp);
         } else {
-          Swal.fire('Error', resp.msg, 'error');
+          Swal.fire('Error', resp.msg, 'info');
         }
       }, (err) => {
         Swal.fire('Error', err.error.msg, 'error');
