@@ -11,10 +11,16 @@ declare const google: any;
   ]
 })
 export class HeaderComponent {
-
+  public imgUrl = '';
+  public nameUser = '';
+  public emailUser = '';
   constructor(private usuarioService: UsuarioService,
               private router: Router,
-              private ngZone: NgZone) { }
+              private ngZone: NgZone) { 
+    this.imgUrl = usuarioService.usuario.imagenUrl;
+    this.emailUser = usuarioService.usuario.email;
+    this.nameUser = usuarioService.usuario.nombre;
+  }
 
   logout() {
     this.usuarioService.logout();

@@ -5,14 +5,16 @@ import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/login-form.interface';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { Usuario } from '../models/usuario.model';
 
 const base_url = environment.base_url;
+declare const google: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioService {
-
+  public usuario: Usuario;
   constructor( private http: HttpClient) { }
 
   logout() {
@@ -20,6 +22,10 @@ export class UsuarioService {
   }
 
   validarToken(): Observable<boolean> {
+    google.accounts.id.initialize({
+      client_id: "39618216965-j1b0vbl6c37od200hks026slihksicn6.apps.googleusercontent.com"
+    });
+
     const token = localStorage.getItem('token') || '';
     return this.http.get(`${base_url}/login/renew`, {
       headers: {
@@ -27,6 +33,8 @@ export class UsuarioService {
       }
     }).pipe(
       tap( (resp: any ) => {
+        const { email, google, uid, nombre, role, img } = resp.usuario; 
+        this.usuario = new Usuario(nombre, email, uid, '', img, role, google);
         localStorage.setItem('token', resp.token);
       }),
       map( resp => {
@@ -63,5 +71,5 @@ export class UsuarioService {
               localStorage.setItem('token', resp.token);
             })
           );
-    }
+  }
 }
