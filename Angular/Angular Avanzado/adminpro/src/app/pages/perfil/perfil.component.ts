@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/models/usuario.model';
 import { FileUploadService } from 'src/app/services/file-upload.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-perfil',
@@ -34,7 +35,12 @@ export class PerfilComponent implements OnInit {
       if(resp.ok){
         this.usuario.nombre = resp.usuario.nombre;
         this.usuario.email = resp.usuario.email;
+        Swal.fire('Guardado', 'Cambios guardados exitosamente', 'success');
+      } else {
+        Swal.fire('Error', resp.msg, 'warning');
       }
+    }, (error) => {
+      Swal.fire('Error', error.error.msg, 'error');
     });
   }
 
@@ -57,6 +63,9 @@ export class PerfilComponent implements OnInit {
       .then( img => {
         if( img !== false){
           this.usuario.img = img;
+          Swal.fire('Guardado', 'Imagen guardada correctamente', 'success');
+        } else {
+          Swal.fire('Error', 'Hubo un problema al guardar la imagen', 'warning');
         }
       });
   }
