@@ -1,5 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
+import { Usuario } from 'src/app/models/usuario.model';
 import { UsuarioService } from 'src/app/services/usuario.service';
 
 declare const google: any;
@@ -11,15 +12,11 @@ declare const google: any;
   ]
 })
 export class HeaderComponent {
-  public imgUrl = '';
-  public nameUser = '';
-  public emailUser = '';
+  public usuario: Usuario;
   constructor(private usuarioService: UsuarioService,
               private router: Router,
               private ngZone: NgZone) { 
-    this.imgUrl = usuarioService.usuario.imagenUrl;
-    this.emailUser = usuarioService.usuario.email;
-    this.nameUser = usuarioService.usuario.nombre;
+    this.usuario = usuarioService.usuario;
   }
 
   logout() {

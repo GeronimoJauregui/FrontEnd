@@ -8,6 +8,7 @@ import { AccountSettingComponent } from './account-setting/account-setting.compo
 import { PromesasComponent } from './promesas/promesas.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AuthGuard } from '../guards/auth.guard';
+import { PerfilComponent } from './perfil/perfil.component';
 
 const routes: Routes = [
     { 
@@ -21,6 +22,7 @@ const routes: Routes = [
           { path: 'account-settings', component: AccountSettingComponent},
           { path: 'promesas', component: PromesasComponent},
           { path: 'rxjs', component: RxjsComponent},
+          { path: 'perfil', component: PerfilComponent, data: { titulo: 'Perfil'} },
         ]
     }
 ];

@@ -21,15 +21,23 @@ export class UsuarioService {
     localStorage.removeItem('token');
   }
 
+  get token(): string {
+    return localStorage.getItem('token') || '';
+  }
+
+  get uid(): string {
+    return this.usuario.uid || '';
+  }
+
   validarToken(): Observable<boolean> {
     google.accounts.id.initialize({
       client_id: "39618216965-j1b0vbl6c37od200hks026slihksicn6.apps.googleusercontent.com"
     });
 
-    const token = localStorage.getItem('token') || '';
+    
     return this.http.get(`${base_url}/login/renew`, {
       headers: {
-        'x-token': token
+        'x-token': this.token
       }
     }).pipe(
       tap( (resp: any ) => {
@@ -53,6 +61,18 @@ export class UsuarioService {
               localStorage.setItem('token', resp.token);
             })
           );
+  }
+
+  actualizarPefil(data: { email: string, nombre: string, role: string }){
+    data = {
+      ...data,
+      role: this.usuario.role
+    }
+    return this.http.put(`${base_url}/usuarios/${ this.uid }`, data ,{
+      headers: {
+        'x-token': this.token
+      }
+    });
   }
 
   login( formData: LoginForm) {
