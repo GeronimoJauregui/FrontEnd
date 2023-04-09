@@ -32,11 +32,20 @@
                 <h4 class="card-title">Avatar</h4>
                 <h6 class="card-subtitle">Imagen del usuario</h6>
                 <form class="form p-t-20">
-                    <img src="">
-                    <input type="file">
+                    <div class="text-center">
+                        <img *ngIf="!imgTemp" [src]="usuario.imagenUrl" class="img-avatar">
+                        <img *ngIf="imgTemp" [src]="imgTemp" class="img-avatar">
+                    </div>
                     <br>
                     <br>
-                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar imagen</button>
+                    <input type="file" (change)="cargarImagen($any($event.target).files[0])">
+                    <br>
+                    <br>
+                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10" 
+                        [disabled]="!imagenSubir"
+                        (click)="subirImagen()">
+                            Guardar imagen
+                    </button>
                     <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</button>
                 </form>
             </div>
