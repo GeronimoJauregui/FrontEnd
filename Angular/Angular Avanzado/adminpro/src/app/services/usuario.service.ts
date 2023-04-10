@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { RegisterForm } from '../interfaces/register-form.interface';
 import { environment } from 'src/environments/environment';
 import { LoginForm } from '../interfaces/login-form.interface';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, delay, map, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
 
@@ -91,5 +91,24 @@ export class UsuarioService {
               localStorage.setItem('token', resp.token);
             })
           );
+  }
+
+  cargarUsuarios(desde: number = 0){
+    return this.http.get(`${base_url}/usuarios/?desde=${ desde }`,{
+      headers: {
+        'x-token': this.token
+      }
+    })
+    .pipe(
+      map( (resp: any) => {
+        const usuarios = resp.usuarios.map(
+          user => new Usuario(user.nombre, user.email, user.uid, '', user.img, user.role, user.google)
+        );
+        return {
+          total: resp.total,
+          usuarios
+        }
+      })
+    );
   }
 }
