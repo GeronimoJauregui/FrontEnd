@@ -111,4 +111,20 @@ export class UsuarioService {
       })
     );
   }
+
+  eliminarUsuario(usuario: Usuario){
+    return this.http.delete(`${base_url}/usuarios/${ usuario.uid }` ,{
+      headers: {
+        'x-token': this.token
+      }
+    });
+  }
+
+  actualizarUsuario(data: Usuario) {
+    return this.http.put(`${base_url}/usuarios/${ data.uid }`, data ,{
+      headers: {
+        'x-token': this.token
+      }
+    });
+  }
 }

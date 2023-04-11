@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Usuario } from 'src/app/models/usuario.model';
 import { BusquedasService } from 'src/app/services/busquedas.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-usuarios',
@@ -52,4 +53,38 @@ export class UsuariosComponent implements OnInit {
     }
   }
 
+  eliminarUsuario(usuario: Usuario) {
+    if( usuario.uid === this.usuarioServices.usuario.uid){
+      Swal.fire('Alerta', `No puede eliminarse a si mismo`, 'warning');
+    } else {
+      Swal.fire({
+        title: 'Borrar usuario?',
+        text: `Esta a punto de borrar a ${usuario.nombre}`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Confirmar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.usuarioServices.eliminarUsuario(usuario).subscribe( (resp: any) => {
+            if( resp.ok){
+              Swal.fire('Usuario borrado', `${usuario.nombre} fue eliminado correctamente`, 'success');
+              this.cargarUsuarios();
+            } else {
+              Swal.fire('Error', `Error al borrar al usuario`, 'warning');
+            }
+          }, (err) => {
+            Swal.fire('Error', err.error.msg, 'error');
+          });
+        }
+      });
+    }
+  }
+
+  cambiarRole(usuario: Usuario) {
+    this.usuarioServices.actualizarUsuario(usuario).subscribe( (resp:any) => {
+      console.log(resp)
+    });
+  }
 }
