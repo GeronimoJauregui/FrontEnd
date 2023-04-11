@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { Usuario } from 'src/app/models/usuario.model';
 import { BusquedasService } from 'src/app/services/busquedas.service';
+import { ModalImagenService } from 'src/app/services/modal-imagen.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import Swal from 'sweetalert2';
 
@@ -10,17 +13,25 @@ import Swal from 'sweetalert2';
   styles: [
   ]
 })
-export class UsuariosComponent implements OnInit {
+export class UsuariosComponent implements OnInit, OnDestroy {
   public totalUsuarios: number = 0;
   public usuarios: Usuario[] = [];
   public usuariosTemp: Usuario[] = [];
   public desde: number = 0;
   public cargando: boolean = true;
+  public imgSubs: Subscription;
   constructor(private usuarioServices: UsuarioService,
-              private busquedasService: BusquedasService) { }
+              private busquedasService: BusquedasService,
+              private _modalImagenService: ModalImagenService) { }
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.cargarUsuarios();
+    this.imgSubs = this._modalImagenService.nuevaImagen
+      .pipe(delay(100))
+      .subscribe( img => this.cargarUsuarios());
   }
 
   cargarUsuarios(){
@@ -86,5 +97,9 @@ export class UsuariosComponent implements OnInit {
     this.usuarioServices.actualizarUsuario(usuario).subscribe( (resp:any) => {
       console.log(resp)
     });
+  }
+
+  abrilModal(usuario: Usuario) {
+    this._modalImagenService.abrirModal('usuarios', usuario.uid, usuario.img);
   }
 }
