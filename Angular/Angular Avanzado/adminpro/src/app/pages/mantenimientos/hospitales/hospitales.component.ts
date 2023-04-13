@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { Hospital } from 'src/app/models/hospital.model';
@@ -13,7 +13,7 @@ import Swal from 'sweetalert2';
   styles: [
   ]
 })
-export class HospitalesComponent implements OnInit {
+export class HospitalesComponent implements OnInit, OnDestroy {
   public hospitales: Hospital[] = [];
   public hospitalesTemp: Hospital[] = [];
   public cargando: boolean = true;
@@ -21,6 +21,9 @@ export class HospitalesComponent implements OnInit {
   constructor(private _hospitalService: HospitalService,
               private _modalImagenService: ModalImagenService,
               private busquedasService: BusquedasService) { }
+  ngOnDestroy(): void {
+    this.imgSubs.unsubscribe();
+  }
 
   ngOnInit(): void {
     this.cargarHospitales();
@@ -48,7 +51,7 @@ export class HospitalesComponent implements OnInit {
 
   eliminarHospital(hospital: Hospital) {
     Swal.fire({
-      title: 'Borrar usuario?',
+      title: 'Borrar hospital?',
       text: `Esta a punto de borrar a ${hospital.nombre}`,
       icon: 'question',
       showCancelButton: true,
