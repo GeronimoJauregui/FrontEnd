@@ -58,4 +58,8 @@ export class BusquedasService {
       })
     );
   }
+
+  buscarTodo(termino: string) {
+    return this.http.get(`${base_url}/todo/${termino}`,this.headers);
+  }
 }
