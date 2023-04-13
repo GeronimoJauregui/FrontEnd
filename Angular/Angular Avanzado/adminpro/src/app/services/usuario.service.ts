@@ -19,6 +19,7 @@ export class UsuarioService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('menu');
   }
 
   get token(): string {
@@ -44,6 +45,7 @@ export class UsuarioService {
         const { email, google, uid, nombre, role, img } = resp.usuario; 
         this.usuario = new Usuario(nombre, email, uid, '', img, role, google);
         localStorage.setItem('token', resp.token);
+        localStorage.setItem('menu', JSON.stringify(resp.menu));
       }),
       map( resp => {
         return true;
@@ -59,6 +61,7 @@ export class UsuarioService {
           .pipe(
             tap( (resp: any ) => {
               localStorage.setItem('token', resp.token);
+              localStorage.setItem('menu', JSON.stringify(resp.menu));
             })
           );
   }
@@ -80,6 +83,7 @@ export class UsuarioService {
           .pipe(
             tap( (resp: any ) => {
               localStorage.setItem('token', resp.token);
+              localStorage.setItem('menu', JSON.stringify(resp.menu));
             })
           );
   }
@@ -89,6 +93,7 @@ export class UsuarioService {
           .pipe(
             tap( (resp: any ) => {
               localStorage.setItem('token', resp.token);
+              localStorage.setItem('menu', JSON.stringify(resp.menu));
             })
           );
   }
